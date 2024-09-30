@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+
+  db:
+    image: postgres:14.0-alpine
+    env_file: example.env
+    volumes:
+      - .:/docker-entrypoint-initdb.d
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+
+
+  myShop:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/myshop
+    depends_on:
+      - db
+
+
+volumes:
+  pg_data:
